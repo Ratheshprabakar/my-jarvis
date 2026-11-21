@@ -1,0 +1,10 @@
+.env
+backend/data/google_token.json
+backend/data/google_watch.json
+backend/data/oauth_pending.json
+backend/.venv/
+frontend/node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
+.DS_Store

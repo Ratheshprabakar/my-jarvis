@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /*
+   * Single source of truth: data-theme on <html>.
+   * Do not mix :root light defaults with html.dark — that caused hybrid UI.
+   */
+  html[data-theme="light"] {
+    color-scheme: light;
+    --surface-0: 248 250 252;
+    --surface-1: 255 255 255;
+    --surface-2: 241 245 249;
+    --surface-3: 203 213 225;
+    --fg: 15 23 42;
+    --fg-muted: 71 85 105;
+    --fg-subtle: 100 116 139;
+    --accent: 37 99 235;
+    --accent-dark: 29 78 216;
+    --accent-dim: 30 64 175;
+    --accent-subtle: 37 99 235;
+    --accent-border: 37 99 235;
+    --accent-subtle-a: 0.10;
+    --accent-border-a: 0.30;
+    --card-shadow: 0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px rgb(15 23 42 / 0.06);
+    --header-bg: 255 255 255;
+    --avatar-sat: 52%;
+    --avatar-lit: 44%;
+    --success-soft: 5 150 105;
+    --danger-soft: 220 38 38;
+  }
+
+  html[data-theme="dark"],
+  html:not([data-theme]) {
+    color-scheme: dark;
+    --surface-0: 9 9 11;
+    --surface-1: 24 24 27;
+    --surface-2: 39 39 42;
+    --surface-3: 63 63 70;
+    --fg: 244 244 245;
+    --fg-muted: 161 161 170;
+    --fg-subtle: 113 113 122;
+    --accent: 59 130 246;
+    --accent-dark: 37 99 235;
+    --accent-dim: 29 78 216;
+    --accent-subtle: 59 130 246;
+    --accent-border: 59 130 246;
+    --accent-subtle-a: 0.14;
+    --accent-border-a: 0.30;
+    --card-shadow: none;
+    --header-bg: 9 9 11;
+    --avatar-sat: 38%;
+    --avatar-lit: 32%;
+    --success-soft: 52 211 153;
+    --danger-soft: 248 113 113;
+  }
+
+  html {
+    font-family: "Inter", ui-sans-serif, system-ui;
+    -webkit-font-smoothing: antialiased;
+    background-color: rgb(var(--surface-0));
+    @media (pointer: fine) { overscroll-behavior: none; }
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: rgb(var(--surface-0));
+    color: rgb(var(--fg));
+    overflow-x: hidden;
+  }
+
+  #root {
+    min-height: 100dvh;
+    background-color: rgb(var(--surface-0));
+    color: rgb(var(--fg));
+  }
+
+  ::-webkit-scrollbar       { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--surface-3));
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--fg-subtle));
+  }
+}
+
+@layer utilities {
+  /* Prefer these over Tailwind bg-surface-* for theme-critical shells */
+  .app-shell {
+    background-color: rgb(var(--surface-0));
+    color: rgb(var(--fg));
+  }
+  .app-header {
+    background-color: rgb(var(--header-bg) / 0.92);
+    color: rgb(var(--fg));
+    border-bottom: 1px solid rgb(var(--surface-3) / 0.7);
+  }
+
+  .card {
+    background: rgb(var(--surface-1));
+    color: rgb(var(--fg));
+    border: 1px solid rgb(var(--surface-3) / 0.9);
+    box-shadow: var(--card-shadow);
+  }
+  .card-flat {
+    background: rgb(var(--surface-2));
+    border: 1px solid rgb(var(--surface-3) / 0.75);
+  }
+
+  .bg-accent-subtle {
+    background-color: rgb(var(--accent-subtle) / var(--accent-subtle-a));
+  }
+  .border-accent-border {
+    border-color: rgb(var(--accent-border) / var(--accent-border-a));
+  }
+
+  .bg-success-soft { background-color: rgb(var(--success-soft) / 0.12); }
+  .text-success    { color: rgb(var(--success-soft)); }
+  .border-success-soft { border-color: rgb(var(--success-soft) / 0.30); }
+
+  .bg-danger-soft { background-color: rgb(var(--danger-soft) / 0.10); }
+  .text-danger    { color: rgb(var(--danger-soft)); }
+  .border-danger-soft { border-color: rgb(var(--danger-soft) / 0.28); }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  .touch-manip {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .dot { width: 6px; height: 6px; border-radius: 9999px; flex-shrink: 0; }
+
+  .panel-shell {
+    height: calc(100dvh - 8.5rem);
+    min-height: 28rem;
+  }
+}
+
+@keyframes waveBar {
+  0%, 100% { transform: scaleY(0.25); }
+  50%       { transform: scaleY(1);   }
+}
+
+@keyframes collapsibleOpen {
+  from { height: 0;                                         opacity: 0; }
+  to   { height: var(--radix-collapsible-content-height);   opacity: 1; }
+}
+@keyframes collapsibleClose {
+  from { height: var(--radix-collapsible-content-height);   opacity: 1; }
+  to   { height: 0;                                         opacity: 0; }
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(calc(100% + 24px)); opacity: 0; }
+  to   { transform: translateX(0);                 opacity: 1; }
+}
+@keyframes toastHide {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes toastSwipeOut {
+  from { transform: translateX(var(--radix-toast-swipe-end-x)); }
+  to   { transform: translateX(calc(100% + 24px));               }
+}
+
+@keyframes tooltipFade {
+  from { opacity: 0; transform: scale(0.96) translateY(2px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1    !important;
+    transition-duration:       0.01ms !important;
+  }
+}
